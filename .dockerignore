@@ -1,0 +1,20 @@
+.git
+.svelte-kit
+build
+node_modules
+
+.env
+.env.*
+!.env.example
+
+.claude
+.vscode
+
+npm-debug.log*
+Dockerfile
+DEPLOYMENT.md
+README.md
+
+# Railway for now
+railway.cron.toml
+railway.toml

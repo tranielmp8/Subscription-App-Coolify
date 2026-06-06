@@ -29,28 +29,28 @@
 	};
 
 	const CATEGORY_COLORS: Record<string, string> = {
-		entertainment: 'bg-pink-100 text-pink-700',
-		productivity: 'bg-blue-100 text-blue-700',
-		utilities: 'bg-yellow-100 text-yellow-700',
-		health: 'bg-green-100 text-green-700',
-		education: 'bg-purple-100 text-purple-700',
-		gaming: 'bg-orange-100 text-orange-700',
-		news: 'bg-cyan-100 text-cyan-700',
-		cloud: 'bg-sky-100 text-sky-700',
-		business: 'bg-indigo-100 text-indigo-700',
-		other: 'bg-gray-100 text-gray-700'
+		entertainment: 'bg-pink-500/20 text-pink-300 ring-1 ring-pink-500/30',
+		productivity: 'bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30',
+		utilities: 'bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-500/30',
+		health: 'bg-green-500/20 text-green-300 ring-1 ring-green-500/30',
+		education: 'bg-purple-500/20 text-purple-300 ring-1 ring-purple-500/30',
+		gaming: 'bg-orange-500/20 text-orange-300 ring-1 ring-orange-500/30',
+		news: 'bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-500/30',
+		cloud: 'bg-sky-500/20 text-sky-300 ring-1 ring-sky-500/30',
+		business: 'bg-indigo-500/20 text-indigo-300 ring-1 ring-indigo-500/30',
+		other: 'bg-slate-500/20 text-slate-300 ring-1 ring-slate-500/30'
 	};
 
-	// ── Tabs with totals ─────────────────────────────────────────────
+	// ── Tabs ─────────────────────────────────────────────────────────
+	const CYCLE_ORDER = ['weekly', 'biweekly', 'monthly', 'quarterly', 'biannual', 'yearly'];
+
 	const allCyclesInData = $derived(
 		[...new Set(data.items.map((i) => i.billingCycle))].sort(
 			(a, b) => CYCLE_ORDER.indexOf(a) - CYCLE_ORDER.indexOf(b)
 		)
 	);
 
-	const CYCLE_ORDER = ['weekly', 'biweekly', 'monthly', 'quarterly', 'biannual', 'yearly'];
-
-	// ── Derived filtered list ────────────────────────────────────────
+	// ── Derived filtered list ─────────────────────────────────────────
 	let filteredItems = $derived.by(() => {
 		let result = data.items;
 
@@ -85,13 +85,13 @@
 			.reduce((sum, i) => sum + parseFloat(i.amount!), 0)
 	);
 
-	// ── Helpers ──────────────────────────────────────────────────────
+	// ── Helpers ───────────────────────────────────────────────────────
 	function statusDot(days: number, active: boolean) {
-		if (!active) return 'bg-gray-300';
-		if (days < 0) return 'bg-red-500';
-		if (days <= 3) return 'bg-orange-500';
-		if (days <= 7) return 'bg-amber-400';
-		return 'bg-emerald-400';
+		if (!active) return 'bg-slate-600';
+		if (days < 0) return 'bg-red-500 shadow-[0_0_7px_#ef4444]';
+		if (days <= 3) return 'bg-orange-500 shadow-[0_0_7px_#f97316]';
+		if (days <= 7) return 'bg-amber-400 shadow-[0_0_7px_#fbbf24]';
+		return 'bg-emerald-400 shadow-[0_0_7px_#34d399]';
 	}
 
 	function daysLabel(days: number) {
@@ -102,11 +102,11 @@
 	}
 
 	function daysColor(days: number, active: boolean) {
-		if (!active) return 'text-gray-400';
-		if (days < 0) return 'text-red-600 font-semibold';
-		if (days <= 3) return 'text-orange-600 font-semibold';
-		if (days <= 7) return 'text-amber-600';
-		return 'text-gray-400';
+		if (!active) return 'text-slate-600';
+		if (days < 0) return 'text-red-400 font-semibold';
+		if (days <= 3) return 'text-orange-400 font-semibold';
+		if (days <= 7) return 'text-amber-400';
+		return 'text-slate-600';
 	}
 
 	function toggleTagFilter(name: string) {
@@ -127,63 +127,82 @@
 	<!-- Search + Add -->
 	<div class="flex items-center gap-3">
 		<div class="relative flex-1">
-			<svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 			</svg>
 			<input
 				type="search"
 				placeholder="Search subscriptions…"
 				bind:value={searchQuery}
-				class="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-4 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+				class="w-full rounded-xl border border-violet-900/30 bg-[var(--surface)] py-2.5 pl-10 pr-4 text-sm text-slate-200 placeholder:text-slate-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 focus:outline-none transition-all"
 			/>
 		</div>
 		<a
 			href="/subscriptions/new"
-			class="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+			class="shrink-0 rounded-xl bg-gradient-to-r from-violet-600 to-violet-700 px-5 py-2.5 text-sm font-bold text-white shadow-[0_0_16px_rgba(139,92,246,0.4)] hover:shadow-[0_0_24px_rgba(139,92,246,0.55)] transition-all"
 		>
-			+ Add Subscription
+			+ Add
 		</a>
 	</div>
 
 	<!-- Stats -->
 	<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-		<div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-			<p class="text-xs font-medium uppercase tracking-wide text-gray-500">Monthly Est.</p>
-			<p class="mt-1 text-xl font-bold text-gray-900">${data.stats.totalMonthly.toFixed(2)}</p>
+		<div class="relative overflow-hidden rounded-xl card-dark p-4 glow-violet">
+			<div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-600 to-violet-400"></div>
+			<p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Monthly Est.</p>
+			<p class="mt-2 text-2xl font-black gradient-text">${data.stats.totalMonthly.toFixed(2)}</p>
 		</div>
-		<div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-			<p class="text-xs font-medium uppercase tracking-wide text-gray-500">Active</p>
-			<p class="mt-1 text-xl font-bold text-gray-900">{data.stats.totalActive}</p>
+		<div class="relative overflow-hidden rounded-xl card-dark p-4 glow-cyan">
+			<div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-600 to-cyan-400"></div>
+			<p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Active</p>
+			<p class="mt-2 text-2xl font-black text-cyan-300">{data.stats.totalActive}</p>
 		</div>
-		<div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-			<p class="text-xs font-medium uppercase tracking-wide text-gray-500">Due This Week</p>
-			<p class="mt-1 text-xl font-bold {data.stats.dueSoon > 0 ? 'text-amber-600' : 'text-gray-900'}">{data.stats.dueSoon}</p>
+		<div class="relative overflow-hidden rounded-xl card-dark p-4 {data.stats.dueSoon > 0 ? 'glow-amber' : ''}">
+			<div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-600 to-amber-400"></div>
+			<p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Due This Week</p>
+			<p class="mt-2 text-2xl font-black {data.stats.dueSoon > 0 ? 'text-amber-300' : 'text-slate-300'}">{data.stats.dueSoon}</p>
 		</div>
-		<div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-			<p class="text-xs font-medium uppercase tracking-wide text-gray-500">Overdue</p>
-			<p class="mt-1 text-xl font-bold {data.stats.overdue > 0 ? 'text-red-600' : 'text-gray-900'}">{data.stats.overdue}</p>
+		<div class="relative overflow-hidden rounded-xl card-dark p-4 {data.stats.overdue > 0 ? 'glow-red' : ''}">
+			<div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-600 to-red-400"></div>
+			<p class="text-xs font-semibold uppercase tracking-widest text-slate-500">Overdue</p>
+			<p class="mt-2 text-2xl font-black {data.stats.overdue > 0 ? 'text-red-400' : 'text-slate-300'}">{data.stats.overdue}</p>
 		</div>
 	</div>
 
-	<!-- Billing cycle tabs -->
+	<!-- Billing cycle tabs — underline indicator style -->
 	<div class="overflow-x-auto">
-		<div class="flex gap-1 rounded-xl border border-gray-200 bg-white p-1 shadow-sm w-max min-w-full">
+		<div class="flex border-b border-violet-900/20 w-max min-w-full">
 			<button
 				onclick={() => (selectedCycle = 'all')}
-				class="flex flex-col items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap
-					{selectedCycle === 'all' ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}"
+				class="relative flex items-center gap-2 px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap
+					{selectedCycle === 'all' ? 'text-[var(--accent-2)]' : 'text-slate-500 hover:text-slate-300'}"
 			>
-				<span>All</span>
-				<span class="text-xs opacity-70 mt-0.5">{data.items.length} subs</span>
+				All
+				<span class="rounded-full px-1.5 py-0.5 text-xs font-bold
+					{selectedCycle === 'all'
+						? 'bg-violet-500/20 text-[var(--accent-2)]'
+						: 'bg-[var(--subtle-hover)] text-slate-500'}">
+					{data.items.length}
+				</span>
+				{#if selectedCycle === 'all'}
+					<div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-600 to-violet-400 shadow-[0_0_4px_rgba(139,92,246,0.7)]"></div>
+				{/if}
 			</button>
 			{#each allCyclesInData as cycle}
 				<button
 					onclick={() => (selectedCycle = cycle)}
-					class="flex flex-col items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap
-						{selectedCycle === cycle ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}"
+					class="relative flex items-center gap-2 px-5 py-3 text-sm font-semibold transition-all whitespace-nowrap
+						{selectedCycle === cycle ? 'text-[var(--accent-2)]' : 'text-slate-500 hover:text-slate-300'}"
 				>
-					<span>{CYCLE_LABELS[cycle] ?? cycle}</span>
-					<span class="text-xs opacity-70 mt-0.5">{tabTotal(cycle) || '—'}</span>
+					{CYCLE_LABELS[cycle] ?? cycle}
+					{#if tabTotal(cycle)}
+						<span class="text-xs font-medium {selectedCycle === cycle ? 'text-slate-400' : 'text-slate-600'}">
+							{tabTotal(cycle)}
+						</span>
+					{/if}
+					{#if selectedCycle === cycle}
+						<div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-600 to-violet-400 shadow-[0_0_4px_rgba(139,92,246,0.7)]"></div>
+					{/if}
 				</button>
 			{/each}
 		</div>
@@ -191,31 +210,32 @@
 
 	<!-- Filter row: status + active tag pills -->
 	<div class="flex flex-wrap items-center gap-2">
-		<span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Status:</span>
+		<span class="text-xs font-semibold uppercase tracking-widest text-slate-600">Status:</span>
 		{#each [['all','All'],['active','Active'],['overdue','Overdue'],['due_soon','Due Soon'],['inactive','Inactive']] as [val, label]}
 			<button
 				onclick={() => (selectedStatus = val)}
-				class="rounded-full px-3 py-1 text-xs font-medium transition-colors
-					{selectedStatus === val ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
+				class="rounded-full px-3 py-1 text-xs font-semibold transition-all
+					{selectedStatus === val
+						? 'bg-violet-500/20 text-violet-400 ring-1 ring-violet-500/40 shadow-[0_0_8px_rgba(139,92,246,0.2)]'
+						: 'bg-[var(--subtle-hover)] text-slate-500 hover:text-slate-300'}"
 			>
 				{label}
 			</button>
 		{/each}
 
 		{#if activeTagNames.length > 0}
-			<span class="ml-2 text-xs font-medium text-gray-500 uppercase tracking-wide">Tags:</span>
+			<span class="ml-2 text-xs font-semibold uppercase tracking-widest text-slate-600">Tags:</span>
 			{#each activeTagNames as name}
 				<button
 					onclick={() => toggleTagFilter(name)}
-					class="flex items-center gap-1 rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200"
+					class="flex items-center gap-1 rounded-full bg-violet-500/20 px-3 py-1 text-xs font-medium text-violet-400 ring-1 ring-violet-500/35 hover:bg-violet-500/30 transition-all"
 				>
-					{name}
-					<span class="leading-none">×</span>
+					{name}<span class="leading-none">×</span>
 				</button>
 			{/each}
 			<button
 				onclick={() => (activeTagNames = [])}
-				class="text-xs text-gray-400 hover:text-gray-600"
+				class="text-xs text-slate-600 hover:text-slate-400 transition-colors"
 			>
 				Clear all
 			</button>
@@ -223,16 +243,16 @@
 	</div>
 
 	<!-- Subscription list -->
-	<div class="rounded-xl border border-gray-200 bg-white shadow-sm">
-		<div class="flex items-center justify-between border-b border-gray-200 px-5 py-3">
+	<div class="rounded-xl card-dark overflow-hidden">
+		<div class="flex items-center justify-between border-b border-violet-900/20 px-5 py-3.5">
 			<div class="flex items-center gap-3">
-				<h2 class="text-sm font-semibold text-gray-900">
+				<h2 class="text-sm font-bold text-slate-200">
 					{selectedCycle === 'all' ? 'All Subscriptions' : (CYCLE_LABELS[selectedCycle] ?? selectedCycle) + ' Subscriptions'}
 				</h2>
-				<span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{filteredItems.length}</span>
+				<span class="rounded-full bg-violet-500/20 px-2.5 py-0.5 text-xs font-bold text-violet-400 ring-1 ring-violet-500/30">{filteredItems.length}</span>
 			</div>
 			{#if filteredTotal > 0}
-				<span class="text-sm font-semibold text-gray-700">
+				<span class="text-sm font-bold gradient-text">
 					${filteredTotal.toFixed(2)}{selectedCycle !== 'all' ? (CYCLE_PERIOD[selectedCycle] ?? '') : ' /mo equiv.'}
 				</span>
 			{/if}
@@ -240,28 +260,28 @@
 
 		{#if filteredItems.length === 0}
 			<div class="px-6 py-14 text-center">
-				<p class="text-gray-400 text-sm">
+				<p class="text-slate-600 text-sm">
 					{searchQuery || activeTagNames.length || selectedStatus !== 'all' || selectedCycle !== 'all'
 						? 'No subscriptions match your filters.'
 						: 'No subscriptions yet.'}
 				</p>
 				{#if !searchQuery && !activeTagNames.length && selectedStatus === 'all' && selectedCycle === 'all'}
-					<a href="/subscriptions/new" class="mt-2 inline-block text-sm text-indigo-600 hover:underline">
+					<a href="/subscriptions/new" class="mt-3 inline-block text-sm font-semibold text-violet-400 hover:text-violet-300 transition-colors">
 						Add your first subscription →
 					</a>
 				{/if}
 			</div>
 		{:else}
-			<ul class="divide-y divide-gray-100">
+			<ul class="divide-y divide-violet-900/15">
 				{#each filteredItems as item}
-					<li class="flex items-start gap-3 px-5 py-4 hover:bg-gray-50/50">
-						<div class="mt-1.5 h-2 w-2 shrink-0 rounded-full {statusDot(item.daysUntil, item.isActive)}"></div>
+					<li class="flex items-start gap-3 px-5 py-4 hover:bg-[var(--subtle)] transition-colors">
+						<div class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {statusDot(item.daysUntil, item.isActive)}"></div>
 
 						<div class="min-w-0 flex-1">
 							<div class="flex flex-wrap items-center gap-1.5">
-								<span class="font-medium text-gray-900">{item.name}</span>
+								<span class="font-semibold text-slate-100">{item.name}</span>
 								{#if item.category}
-									<span class="rounded-full px-2 py-0.5 text-xs font-medium {CATEGORY_COLORS[item.category] ?? 'bg-gray-100 text-gray-700'}">
+									<span class="rounded-full px-2 py-0.5 text-xs font-medium {CATEGORY_COLORS[item.category] ?? 'bg-slate-500/20 text-slate-300 ring-1 ring-slate-500/30'}">
 										{item.category}
 									</span>
 								{/if}
@@ -269,23 +289,23 @@
 									<button
 										onclick={() => toggleTagFilter(tag.name)}
 										class="rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-80 {tagColorClass(tag.color)}
-											{activeTagNames.includes(tag.name) ? 'ring-1 ring-offset-1 ring-current' : ''}"
+											{activeTagNames.includes(tag.name) ? 'ring-1 ring-offset-1 ring-offset-[var(--surface)] ring-current' : ''}"
 										title="Filter by {tag.name}"
 									>
 										{tag.name}
 									</button>
 								{/each}
 								{#if !item.isActive}
-									<span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-400">inactive</span>
+									<span class="rounded-full bg-slate-700/50 px-2 py-0.5 text-xs text-slate-500 ring-1 ring-slate-600/30">inactive</span>
 								{/if}
 							</div>
 							<div class="mt-0.5 flex flex-wrap gap-x-3 text-sm">
 								{#if item.amount}
-									<span class="font-medium text-gray-700">
+									<span class="font-bold text-violet-300">
 										${parseFloat(item.amount).toFixed(2)}{CYCLE_PERIOD[item.billingCycle] ?? ''}
 									</span>
 								{/if}
-								<span class="text-gray-400">
+								<span class="text-slate-600">
 									Due {new Date(item.dueDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
 								</span>
 								<span class={daysColor(item.daysUntil, item.isActive)}>
@@ -295,8 +315,8 @@
 						</div>
 
 						<div class="flex shrink-0 gap-1">
-							<a href="/subscriptions/{item.id}" class="rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-600 hover:bg-indigo-50">View</a>
-							<a href="/subscriptions/{item.id}/edit" class="rounded-lg px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100">Edit</a>
+							<a href="/subscriptions/{item.id}" class="rounded-lg bg-violet-500/15 px-3 py-1.5 text-xs font-semibold text-violet-400 ring-1 ring-violet-500/30 hover:bg-violet-500/25 transition-all">View</a>
+							<a href="/subscriptions/{item.id}/edit" class="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-500 hover:bg-[var(--subtle-hover)] hover:text-slate-300 transition-all">Edit</a>
 						</div>
 					</li>
 				{/each}
